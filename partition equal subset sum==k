@@ -1,0 +1,30 @@
+ bool solve(vector<int>&nums,int k){
+     vector<bool>prev(k+1, 0), curr(k+1, 0);  
+     //target= == 0 return true;  
+       prev[0] = curr[0] = true;
+       //index==0 return arr[0]==k;
+    if(nums[0] <=k) prev[nums[0]] = true;
+      //for rows 
+       for(int i=1 ; i<nums.size(); i++){
+           for(int j=1; j<=k; j++){
+             bool nontake = prev[j];   
+             bool take = false;  
+             if(j>=nums[i])take = prev[j-nums[i]];  
+               curr[j] = take | nontake; 
+           }
+           prev = curr;
+       }
+     return prev[k]; 
+   } 
+    
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i=0; i<nums.size(); i++){
+            sum = sum + nums[i];
+        }
+        if(sum % 2)return false;
+        int k = sum /2;
+        return solve(nums, k);
+    
+    }
+};
