@@ -1,0 +1,33 @@
+  int mod = 1e9+7;
+   int f(vector<int>&arr, int k, int n){
+      //vector<vector<int>>dp(n, vector<int>(k+1, 0));
+    vector<int>prev(k+1, 0), curr(k+1, 0);
+    if(arr[0]== 0)prev[0] = 2;
+    else prev[0] = 1;
+        
+    if(  arr[0] != 0&& arr[0] <= k)prev[arr[0]] = 1;   
+       
+       for(int i=1; i<n; i++){
+         for(int j =0; j<=k; j++){
+             
+             int non_pick = prev[j]%mod;
+             int pick = 0;
+             if(arr[i] <= j)pick = prev[j - arr[i]] %mod;
+             curr[j] = pick + non_pick%mod;
+         }     
+         prev = curr;  
+       }
+      return prev[k]%mod;
+   }
+    int countPartitions(int n, int d, vector<int>& arr) {
+        int totalSum = 0;
+    
+        for(int i=0; i<n; i++){
+            totalSum = totalSum + arr[i]%mod;
+        }
+        if(totalSum-d < 0 || (totalSum-d) % 2)return 0;
+        else return f(arr, (totalSum -d)/2, n)%mod;
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        return countPartitions(nums.size(), target, nums);
+    }
