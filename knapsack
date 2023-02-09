@@ -1,0 +1,26 @@
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+  
+  //TABULATION
+    int knapSack(int w, int wt[], int val[], int n) 
+    { 
+      vector<vector<int>>dp(n, vector<int>(w+1, 0));
+      //BASE CASE
+      for(int i= wt[0]; i<=w; i++){
+          dp[0][i] = val[0];
+      }
+      
+      for(int i= 1; i<n; i++){
+          for(int j =0; j<=w; j++){
+              
+            int non_pick = 0 + dp[i-1][j];     
+            int pick = INT_MIN;
+            if(j >= wt[i]) pick = val[i] + dp[i-1][j - wt[i]];    
+            dp[i][j] = max(pick, non_pick);    
+          }
+         
+      }
+      return dp[n-1][w];
+    }
