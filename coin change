@@ -1,0 +1,32 @@
+ int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        int k = amount;
+        
+   //     vector<vector<int>>dp(n, vector<int>(k+1, 0));
+        //BASE CASE
+     vector<int>prev(k+1, 0);
+        vector<int>curr(k+1, 0);
+        
+        for(int i = 0; i<=k ; i++){
+          if( i % coins[0] == 0){
+              prev[i] =  i / coins[0];
+          }
+          else{
+             prev[i] = 1e9;
+          } 
+        }
+        
+        for(int i=1; i<n; i++){
+            for(int j=0; j<=k; j++){
+               int non_pick = 0+ prev[j];   
+                int pick = 1e9;
+                //unlimited supply thats why not considered i - 1.
+                if( j >= coins[i]) pick = 1+ curr[j- coins[i]];
+                curr[j] = min(pick, non_pick);
+            }
+            prev = curr;
+        }
+      int ans = prev[k];
+      if(ans>=1e9)return -1;
+      else return ans;
+    }
