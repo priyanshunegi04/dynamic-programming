@@ -1,0 +1,48 @@
+
+class Solution{
+public:
+//SPACE-OPTIMISATION
+   int knapSack(int N, int W, int val[], int wt[])
+    {
+    int n = N;
+    int w = W;
+    //vector<vector<int>>dp(n, vector<int>(w+1, 0));
+    vector<int>prev(w+1, 0), curr(w+1, 0);
+    for(int j=0; j<=w; j++){
+      prev[j] = ((int)j / wt[0]) * val[0];
+    }
+    
+    for(int i=1; i<n; i++){
+        for(int j = 0; j<=w; j++){
+             
+          int non_pick = 0 + prev[j];  
+          int pick = -1e9;        
+          if(j >= wt[i])pick = val[i] + curr[j-wt[i]];    
+          curr[j] = max(pick, non_pick);   
+        }
+        prev = curr;
+    }    
+    return prev[w];
+    }
+//TABULATION
+    /*int knapSack(int N, int W, int val[], int wt[])
+    {
+    int n = N;
+    int w = W;
+    vector<vector<int>>dp(n, vector<int>(w+1, 0));
+    
+    for(int j=0; j<=w; j++){
+        dp[0][j] = ((int)j / wt[0]) * val[0];
+    }
+    
+    for(int i=1; i<n; i++){
+        for(int j = 0; j<=w; j++){
+             
+          int non_pick = 0 + dp[i-1][j];  
+          int pick = -1e9;        
+          if(j >= wt[i])pick = val[i] + dp[i][j-wt[i]];    
+          dp[i][j] = max(pick, non_pick);   
+        }
+    }    
+    return dp[n-1][w];
+    }*/
