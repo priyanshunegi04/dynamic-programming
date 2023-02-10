@@ -1,0 +1,25 @@
+
+class Solution{
+  public:
+    int cutRod(int price[], int n) {
+     
+  vector<vector<int>>dp(n, vector<int>(n+1, 0));
+   //BASE CASE    
+   //jitni length ki rod utni hi toh lunga.
+    for(int i=0; i<=n; i++){
+        dp[0][i] = i*price[0];
+    }
+    
+    
+    for(int i=1; i<n; i++){
+        for(int j=0; j<=n; j++){
+         int non_pick = 0 + dp[i-1][j];   
+          int pick = -1e9;  
+          int rodlength = i+1;
+         if( rodlength <= j)pick = price[i] + dp[i][j - rodlength];    
+            
+        dp[i][j] = max(pick, non_pick);    
+        }
+    }
+    return dp[n-1][n];
+    }
