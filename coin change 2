@@ -1,0 +1,42 @@
+    //SPACE_ OPTIMISATION
+   int change(int amount, vector<int>& coins) {
+        int n = coins.size();
+        int k = amount;
+     //   vector<vector<int>>dp(n, vector<int>(k+1, 0));
+       vector<int>prev(k+1, 0), curr(k+1, 0); 
+        for(int t = 0; t<=k; t++){
+            prev[t] = (t % coins[0] == 0);
+        }
+        for(int i=1; i<n; i++){
+            for(int j=0; j<=k; j++){
+                
+             int non_pick = prev[j]; 
+             int pick = 0;
+             if( j>= coins[i] )pick = curr[j-coins[i]];   
+             curr[j] =  non_pick + pick;  
+            }
+            prev = curr;
+        }
+        return prev[k];
+   }
+    //TABULATION
+   /* int change(int amount, vector<int>& coins) {
+        int n = coins.size();
+        int k = amount;
+        vector<vector<int>>dp(n, vector<int>(k+1, 0));
+        
+        for(int t = 0; t<=k; t++){
+            dp[0][t] = (t % coins[0] == 0);
+        }
+        
+        for(int i=1; i<n; i++){
+            for(int j=0; j<=k; j++){
+                
+             int non_pick = dp[i-1][j]; 
+             int pick = 0;
+             if( j>= coins[i] )pick = dp[i][j-coins[i]];   
+             dp[i][j] =  non_pick + pick;  
+            }
+        }
+        return dp[n-1][k];
+    }*/
