@@ -1,0 +1,26 @@
+ int solve(int i, int j, string &p, string &s, vector<vector<int>>&dp){
+    
+     if(i<0 && j<0) return true; 
+      if( i<0 && j>=0) return false;
+      if(i>=0 && j<0){
+          for(int ii=0; ii<=i; ii++){
+              if(p[ii] != '*')return false;
+          }
+          return true;
+      }
+      
+      if(dp[i][j] != -1)return dp[i][j];
+      
+      if(p[i] == s[j]  || p[i] =='?')return dp[i][j] = solve(i-1, j-1,p,s,dp);
+      if(p[i] == '*') return dp[i][j] = solve(i-1, j,p,s,dp) | solve(i,j-1,p,s,dp);
+    
+         return dp[i][j] =false; 
+  }  
+    //Memoisation
+    bool isMatch(string s, string p) {
+        int n = s.length();
+        int m = p.length();
+        
+      vector<vector<int>>dp(m, vector<int>(n, -1));
+      return solve(m-1, n-1 ,p, s, dp);  
+    }
