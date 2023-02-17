@@ -1,0 +1,88 @@
+ //ind+1 after, ind-->curr
+    //space optinsation    
+      int maxProfit(vector<int>& prices) {
+      long n = prices.size();
+    vector<vector<int>>after(2, vector<int>(3, 0));
+    vector<vector<int>>curr(2, vector<int>(3,0));
+
+    for(int idx=n-1; idx>=0; idx--){
+            for(int buy = 0; buy<=1; buy++){
+                for(int cap = 1; cap<=2; cap++){
+     // buying a stock
+                  if(buy==1){
+          curr[buy][cap] = max(-prices[idx] + after[0][cap], 0 + after[1][cap]);
+                    }
+        //sell
+                else{
+         curr[buy][cap] = max( prices[idx] + after[1][cap-1], 0 + after[0][cap]);
+                        }           
+                }
+            }
+        after = curr;
+        }
+      return after[1][2];       
+    }
+    
+
+    //TABULATION
+ /*   int maxProfit(vector<int>& prices) {
+      long n = prices.size();
+    vector<vector<vector<long>>>dp(n+1, vector<vector<long>>(2, vector<long>(3, 0)));
+   /*
+    //base case
+    //no need to cover base case as dp is already set 0;
+    for(int idx = 0; idx<n; idx++){
+        for(int buy = 0; buy<=1; buy++){
+        dp[idx][buy][0] = 0; 
+        }
+    }
+        
+     for(int buy = 0; buy<=1; buy++){
+         for(int cap = 0; cap<=2; cap++){
+          dp[n][buy][cap] = 0;   
+         }
+     }*/
+/*        for(int idx=n-1; idx>=0; idx--){
+            for(int buy = 0; buy<=1; buy++){
+                for(int cap = 1; cap<=2; cap++){
+     // buying a stock
+                  if(buy==1){
+           dp[idx][buy][cap] = max(-prices[idx] + dp[idx+1][0][cap], 0 + dp[idx+1][1][cap]);
+                    }
+        //sell
+                else{
+         dp[idx][buy][cap] = max( prices[idx] + dp[idx+1][1][cap-1], 0 + dp[idx+1][0][cap]);
+                        }           
+                }
+            }
+        }
+      return dp[0][1][2];       
+    }*/ 
+    // memoisation--------------------->solution
+   /* int f(int idx, int buy, int cap, vector<int>&prices, vector<vector<vector<int>>>&dp){
+        
+     int n = prices.size();   
+        //if chances are exhausted there will be no profit gain, from market.
+     if(cap == 0)return 0;   
+    //if days are exhausted there is no profit to get from market;
+     if(idx == n)return 0;
+     if(dp[idx][buy][cap] != -1)return dp[idx][buy][cap];
+      
+      long long profit = 0;  
+     // buying a stock
+        if(buy){
+           profit = max(-prices[idx] + f(idx+1, 0, cap,prices, dp) , 0 + f(idx+1, 1, cap, prices,dp));
+         }
+        //sell
+        else{
+           profit = max( prices[idx] + f(idx+1, 1, cap-1, prices, dp), 0 + f(idx+1, 0, cap, prices, dp));
+        }
+        dp[idx][buy][cap] = profit;
+        return dp[idx][buy][cap];
+    }
+    
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<vector<int>>>dp(n, vector<vector<int>>(2, vector<int>(3, -1)));
+        return f(0, 1, 2, prices, dp);    
+    }*/
