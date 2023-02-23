@@ -1,0 +1,49 @@
+public:
+    //tc---> n^3
+    //sc -->n^2;
+    //no auxillary stack space;
+int minCost(int c, vector<int>& price) {
+     price.insert(price.begin(), 0);   
+     price.push_back(c);
+     sort(price.begin(), price.end());       
+     int n = price.size();
+     vector<vector<int>>dp(n+1, vector<int>(n+1, 0));
+   for(int i = n-1; i>=1; i--){
+       for(int j = i;j<= n-2; j++ ){
+           
+            int mini = 1e9;
+          for(int k = i; k<=j; k++ ){
+             int cost = price[j+1] - price[i-1] + dp[i][k-1] + dp[k+1][j];
+                mini = min(mini, cost);    
+    }
+     dp[i][j] =mini;   
+       }
+      
+   }
+    return dp[1][n-2];
+}    
+    //tc -->m^3
+    //sc --> n^2 + auxillary stack space
+    //MEMOISATION
+    /*t f(int i, int j, vector<int>& price, vector<vector<int>>& dp){
+        
+    if(i>j)return 0; 
+    if(dp[i][j]!=-1)return dp[i][j];
+      
+    int mini = 1e9;
+    for(int k = i; k<=j; k++ ){
+      int cost = price[j+1] - price[i-1] + f(i, k-1, price, dp) + f(k+1, j, price, dp);
+       mini = min(mini, cost);    
+    }
+      return dp[i][j] = mini;  
+    }    
+    
+    int minCost(int c, vector<int>& price) {
+     int n = price.size();
+     vector<vector<int>>dp(n+1, vector<int>(n+1, -1));
+     price.insert(price.begin(), 0);   
+     price.push_back(c);
+     sort(price.begin(), price.end());       
+      return f(1,price.size()- 2,price, dp);
+    }*/
+};
