@@ -1,0 +1,46 @@
+ //TABULATION
+    
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+     int n = arr.size(); 
+     vector<int>dp(n+1, 0);
+     dp[n] = 0;
+    for(int ind=n-1; ind>=0; ind--){
+             
+     int mxAns = -1e9;
+     int len = 0, maxi = -1e9;   
+    
+    for(int j=ind; j<min(n, ind+k); j++){
+      len++;    
+      maxi = max(maxi, arr[j]);    
+      int sum = (len* maxi) + dp[j+1];    
+      mxAns = max(mxAns, sum);    
+    }   
+    dp[ind] = mxAns;
+      }  
+    return dp[0];    
+    }
+    
+    //MEMOISATION
+ /*  int f(int ind, int n, int k, vector<int>&arr, vector<int>&dp){
+    if(ind==n)return 0;   
+       
+    if(dp[ind]!=-1)return dp[ind];
+    
+    int mxAns = -1e9;
+    int len = 0, maxi = -1e9;   
+    
+    for(int j=ind; j<min(n, ind+k); j++){
+    len++;    
+    maxi = max(maxi, arr[j]);    
+    int sum = (len* maxi) + f(j+1, n, k, arr, dp);    
+    mxAns = max(mxAns, sum);    
+    }   
+    return dp[ind] = mxAns;
+   } 
+
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+     int n = arr.size(); 
+     vector<int>dp(n, -1);
+     return f(0, n, k, arr, dp);   
+    }*/
+};
