@@ -1,0 +1,34 @@
+class Solution {
+public://memoised
+    unordered_map<string, bool>mp;
+    //recursive
+    bool isScramble(string a, string b) {
+        //BASE Case
+       
+        if(a.compare(b) == 0){
+            return true;
+        }
+        
+        if(a.length() <= 1){
+            return false;
+        }
+        string key = a + "" + b;
+        if(mp.find(key) != mp.end()){
+            return mp[key];
+        }
+    
+        int n = a.length();
+        bool flag = false;
+        
+        for(int i=1; i<=n-1; i++){
+            bool case1  = isScramble( a.substr(0,i) , b.substr(n-i, i)) && isScramble(a.substr(i, n-1) , b.substr(0, n-i));
+            
+            bool case2 = isScramble( a.substr(0,i) , b.substr(0, i)) && isScramble(a.substr(i, n-1) , b.substr(i, n-i));  
+        if(case1 || case2){
+            flag = true;
+            mp[key] = flag;
+        }
+        }
+        return mp[key];
+    }
+};
